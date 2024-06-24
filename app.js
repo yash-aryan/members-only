@@ -26,14 +26,15 @@ app.set('view engine', 'ejs');
 
 // more middlewares
 app.use(logger('dev'));
-app.use(session({ secret: process.env.SECRET_KEY, resave: false, saveUninitialized: true }));
-app.use(passport.session());
+// app.use(session({ secret: process.env.SECRET_KEY, resave: false, saveUninitialized: true }));
+// app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
-app.use('/', require('./routes/index'));
+app.use('/', require('./routes/index-route'));
+app.use('/sign-up', require('./routes/sign-up-route'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
