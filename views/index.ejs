@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title><%= title %></title>
+		<title><%= locals.title %></title>
 		<link rel="stylesheet" href="/stylesheets/style.css" />
 	</head>
 
 	<body>
-		<h1><%= title %></h1>
-		<p>Welcome to <%= title %></p>
+		<header>
+			<h1>Welcome to <%= locals.title %></h1>
+			<% if (locals.user) { %>
+			<h2><%= locals.user.name %></h2>
+			<a href="/log-out">Log out</a>
+			<% } else { %>
+			<a href="/log-in">Log in</a>
+			<a href="/sign-up">Create an account</a>
+			<% } %>
+		</header>
 	</body>
 </html>

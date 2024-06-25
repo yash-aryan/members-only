@@ -54,8 +54,21 @@ exports.sign_up_post = [
 			isMember: false,
 			isAdmin: false,
 		});
-		console.log(user);
-		// await user.save();
+		await user.save();
 		res.redirect('/');
 	}),
 ];
+
+// GET login
+exports.log_in_get = asyncHandler(async (req, res, next) => {
+	res.render('log-in', { locals: {} });
+});
+
+// GET logout
+exports.log_out_get = (req, res, next) => {
+	req.logout(err => {
+		if (err) return next(err);
+
+		res.redirect('/');
+	});
+};

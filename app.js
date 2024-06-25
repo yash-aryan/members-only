@@ -2,7 +2,14 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const User = require('./models/user-model');
+const indexRouter = require('./routes/index-route');
+const { log_in_get, log_out_get } = require('./controllers/auth-controller');
 
 require('dotenv').config();
 
@@ -26,8 +33,35 @@ app.set('view engine', 'ejs');
 
 // more middlewares
 app.use(logger('dev'));
-// app.use(session({ secret: process.env.SECRET_KEY, resave: false, saveUninitialized: true }));
-// app.use(passport.session());
+app.use(session({ secret: process.env.SECRET_KEY, resave: false, saveUninitialized: true }));
+app.use(passport.session());
+passport.use(
+	new LocalStrategy(async (name, password, done) => {
+		try {
+			const user = await User.findOne({ name });
+			if (!user) return done(null, false, { message: 'Incorrect username!' });
+
+			const passwordMatch = await bcrypt.compare(password, user.password);
+
+			if (!passwordMatch) return done(null, false, { message: 'Incorrect password!' });
+
+			return done(null, user);
+		} catch (err) {
+			return done(err);
+		}
+	})
+);
+passport.serializeUser((user, done) => done(null, user.id));
+
+passport.deserializeUser(async (id, done) => {
+	try {
+		const user = await User.findById(id);
+		done(null, user);
+	} catch (err) {
+		done(err);
+	}
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -35,6 +69,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 // routes
 app.use('/', require('./routes/index-route'));
 app.use('/sign-up', require('./routes/sign-up-route'));
+
+// login/logout routing
+app.get('/log-in', log_in_get);
+app.post(
+	'/log-in',
+	passport.authenticate('local', {
+		successRedirect: '/',
+		failureRedirect: '/sign-up',
+	})
+);
+app.get('/log-out', log_out_get);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
