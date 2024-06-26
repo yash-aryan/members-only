@@ -5,6 +5,8 @@ const User = require('../models/user-model.js');
 
 // GET signup
 exports.sign_up_get = asyncHandler(async (req, res, next) => {
+	if (req.user) return res.redirect('/');
+
 	res.render('sign-up', { locals: {} });
 });
 
@@ -61,6 +63,8 @@ exports.sign_up_post = [
 
 // GET login
 exports.log_in_get = asyncHandler(async (req, res, next) => {
+	if (req.user) return res.redirect('/');
+
 	res.render('log-in', { locals: {} });
 });
 

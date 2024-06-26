@@ -12,9 +12,39 @@
 			<h2><%= locals.user.name %></h2>
 			<a href="/log-out">Log out</a>
 			<% } else { %>
+			<h2>You are not logged in!</h2>
 			<a href="/log-in">Log in</a>
 			<a href="/sign-up">Create an account</a>
 			<% } %>
 		</header>
+		<main>
+			<article>
+				<h2>Messages</h2>
+				<% if(locals.messages.length) { locals.messages.forEach(message => { %>
+				<article>
+					<div>
+						<h3><%= message.author.name %></h3>
+						<span><%= message.createdAt %></span>
+					</div>
+					<p><%= message.text %></p>
+				</article>
+				<% }) } else { %>
+				<p>No messages in chat :(</p>
+				<% } %> <% if (locals.user) { %>
+				<form action="/" method="post">
+					<textarea name="message" id="" cols="50" rows="8" placeholder="Silly message"></textarea>
+					<% if (locals.errors) { %>
+					<ul>
+						<% locals.errors.forEach(err => { %>
+						<li><%= err.msg %></li>
+						<% }) } %>
+					</ul>
+					<br />
+					<button type="submit">Send Message</button>
+					<button type="reset">Clear</button>
+				</form>
+				<% } %>
+			</article>
+		</main>
 	</body>
 </html>

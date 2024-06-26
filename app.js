@@ -66,6 +66,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// forces page reload on page navigation
+app.use((req, res, next) => {
+	res.set(
+		'Cache-Control',
+		'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0'
+	);
+	next();
+});
+
 // routes
 app.use('/', require('./routes/index-route'));
 app.use('/sign-up', require('./routes/sign-up-route'));
@@ -76,7 +85,7 @@ app.post(
 	'/log-in',
 	passport.authenticate('local', {
 		successRedirect: '/',
-		failureRedirect: '/sign-up',
+		failureRedirect: '/log-in',
 	})
 );
 app.get('/log-out', log_out_get);
