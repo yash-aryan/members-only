@@ -33,7 +33,7 @@ async function populateUsers() {
 
 	async function createUser(name, email, plainPassword, isMember, isAdmin) {
 		// get hashed and salted password using plain text
-		const password = bcrypt.hashSync(plainPassword, 10);
+		const password = await bcrypt.hash(plainPassword, 10);
 		const user = new User({ name, email, password, isMember, isAdmin });
 		await user.save();
 		users.push(user);

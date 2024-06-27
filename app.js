@@ -2,6 +2,10 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
+const debug = require('debug');
+const compression = require('compression');
+const helmet = require('helmet');
+const RateLimit = require('express-rate-limit');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -23,7 +27,7 @@ mongoose.set('strictQuery', false);
 	try {
 		await mongoose.connect(process.env.MONGO_URI);
 	} catch (err) {
-		console.log(err);
+		debug(err);
 	}
 })();
 
@@ -32,8 +36,24 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // more middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(logger('dev'));
+app.use(compression());
+app.use(helmet());
+
+// sets rate limit - max 20 req per minute
+const limiter = RateLimit({
+	windowMs: 1 * 60 * 1000, // 1 minute
+	max: 20,
+});
+app.use(limiter);
+
+// sets session ID cookie
 app.use(session({ secret: process.env.SECRET_KEY, resave: false, saveUninitialized: true }));
+
+// sets background processes for passport during passport.authenticate()
 app.use(passport.session());
 passport.use(
 	new LocalStrategy(async (name, password, done) => {
@@ -61,10 +81,6 @@ passport.deserializeUser(async (id, done) => {
 		done(err);
 	}
 });
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 // forces page reload on page navigation
 app.use((req, res, next) => {

@@ -48,11 +48,11 @@ exports.sign_up_post = [
 			res.status(400);
 			return res.render('sign-up', { locals });
 		}
-		const password = bcrypt.hashSync(req.body.password, 10);
+		const hashedPassword = await bcrypt.hash(req.body.password, 10);
 		const user = new User({
 			name: req.body.username,
 			email: req.body.email,
-			password,
+			password: hashedPassword,
 			isMember: false,
 			isAdmin: false,
 		});
