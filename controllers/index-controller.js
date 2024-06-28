@@ -5,7 +5,7 @@ const Message = require('../models/message-model.js');
 
 exports.index_get = asyncHandler(async (req, res, next) => {
 	const messages = await Message.find({}).populate('author').exec();
-	res.render('index', { locals: { title: 'Secret Club', user: req.user, messages } });
+	res.render('index', { title: 'Secret Club', user: req.user, messages });
 });
 
 const messageValidator = [

@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Sign up</title>
-	</head>
-
+	<%- include('./components/head') %>
 	<body>
-		<h1>Sign up to chat :)</h1>
-		<form method="post">
-			<label>
-				Username
-				<input type="text" name="username" autocomplete="username" />
-			</label>
-			<label>
-				Email
-				<input type="email" name="email" placeholder="example@example.com" autocomplete="email" />
-			</label>
-			<label>
-				Password
-				<input type="password" name="password" autocomplete="new-password" />
-			</label>
-			<button type="submit">Sign up</button>
-		</form>
-		<% if (locals.errors) { %>
-		<ul>
-			<% locals.errors.forEach(err => { %>
-			<li><%= err.msg %></li>
-			<% }) %>
-		</ul>
-		<% } %>
+		<header>
+			<h1>Create Account</h1>
+		</header>
+		<main class="main-container">
+			<form method="post" class="form flex--col">
+				<label class="flex--col labelled-input">
+					Username
+					<input type="text" name="username" autocomplete="username" class="input-field" />
+				</label>
+				<label class="flex--col labelled-input">
+					Email
+					<input
+						type="email"
+						name="email"
+						placeholder="example@example.com"
+						autocomplete="email"
+						class="input-field" />
+				</label>
+				<label class="flex--col labelled-input">
+					Password
+					<input type="password" name="password" autocomplete="new-password" class="input-field" />
+				</label>
+				<button type="submit" class="btn">Sign up</button>
+			</form>
+			<% if (locals.errors) { %>
+				<%- include('./components/error-list') %>
+			<% } %>
+		</main>
 	</body>
 </html>

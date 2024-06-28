@@ -7,7 +7,7 @@ const User = require('../models/user-model.js');
 exports.sign_up_get = asyncHandler(async (req, res, next) => {
 	if (req.user) return res.redirect('/');
 
-	res.render('sign-up', { locals: {} });
+	res.render('sign-up');
 });
 
 // POST signup
@@ -44,9 +44,8 @@ exports.sign_up_post = [
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
-			const locals = { errors: errors.array() };
 			res.status(400);
-			return res.render('sign-up', { locals });
+			return res.render('sign-up', { errors: errors.array() });
 		}
 		const hashedPassword = await bcrypt.hash(req.body.password, 10);
 		const user = new User({
@@ -65,7 +64,7 @@ exports.sign_up_post = [
 exports.log_in_get = asyncHandler(async (req, res, next) => {
 	if (req.user) return res.redirect('/');
 
-	res.render('log-in', { locals: {} });
+	res.render('log-in');
 });
 
 // GET logout

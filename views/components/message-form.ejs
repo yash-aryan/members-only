@@ -1,0 +1,18 @@
+<form action="/" method="post" class="form flex--col">
+	<label class="flex--col labelled-input">
+		Create Message
+		<textarea
+			name="message"
+			cols="50"
+			rows="8"
+			placeholder="Say something wholesome~"
+			class="input-field input-message"></textarea>
+	</label>
+	<% if (locals.errors) { %>
+		<%- include('./components/error-list') %>
+	<% } %>
+	<div class="form_group flex--row">
+		<button type="submit" class="btn">Send Message</button>
+		<button type="reset" class="btn--outline">Clear</button>
+	</div>
+</form>
