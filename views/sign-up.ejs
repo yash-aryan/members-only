@@ -6,10 +6,10 @@
 			<h1>Create Account</h1>
 		</header>
 		<main class="main-container">
-			<form method="post" class="form flex--col">
+			<form action="/sign-up" method="post" class="form flex--col">
 				<label class="flex--col labelled-input">
 					Username
-					<input type="text" name="username" autocomplete="username" class="input-field" />
+					<input type="text" name="username" autocomplete="username" class="input-field" required />
 				</label>
 				<label class="flex--col labelled-input">
 					Email
@@ -18,11 +18,17 @@
 						name="email"
 						placeholder="example@example.com"
 						autocomplete="email"
-						class="input-field" />
+						class="input-field"
+						required />
 				</label>
 				<label class="flex--col labelled-input">
 					Password
-					<input type="password" name="password" autocomplete="new-password" class="input-field" />
+					<input
+						type="password"
+						name="password"
+						autocomplete="new-password"
+						class="input-field"
+						required />
 				</label>
 				<button type="submit" class="btn">Sign up</button>
 			</form>

@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/user-model.js');
+require('dotenv').config;
 
 // GET signup
 exports.sign_up_get = asyncHandler(async (req, res, next) => {
@@ -56,7 +57,11 @@ exports.sign_up_post = [
 			isAdmin: false,
 		});
 		await user.save();
-		res.redirect('/');
+		req.login(user, err => {
+			if (err) return next(err);
+
+			res.redirect('/');
+		});
 	}),
 ];
 
@@ -75,3 +80,34 @@ exports.log_out_get = (req, res, next) => {
 		res.redirect('/');
 	});
 };
+
+// GET membership
+exports.membership_get = asyncHandler(async (req, res, next) => {
+	if (!req.user || req.user.isMember || req.user.isAdmin) return res.redirect('/');
+
+	res.render('membership', { title: 'Become a Member' });
+});
+
+// POST membership
+exports.membership_post = [
+	body('answer', "You don't deserve...")
+		.trim()
+		.custom(value => {
+			if (!value.toLowerCase() === process.env.MEMBERSHIP_ANSWER) {
+				throw new Error("You don't deserve...");
+			}
+			return true;
+		})
+		.escape(),
+	asyncHandler(async (req, res, next) => {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			res.status(400);
+			return res.render('membership', { title: 'Become a Member', errors: errors.array() });
+		}
+
+		await User.findByIdAndUpdate(req.user.id, { $set: { isMember: true } }).exec();
+		res.redirect('/');
+	}),
+];

@@ -1,15 +1,26 @@
-<header>
+<header class="flex--col header">
 	<h1>Welcome to <%= locals.title %></h1>
 	<% if (locals.user) { %>
-	<h2><%= user.name %></h2>
+	<% if (user.isMember) { %>
+		<h2 class="text-shiny"><%= user.name %></h2>
+	<% } else { %>
+		<h2><%= user.name %></h2>
+	<% } %>
 	<nav>
-		<a href="/log-out">Log out</a>
+		<ul class="flex--row nav-list">
+			<li><a href="/log-out">Log out</a></li>
+			<% if (!user.isMember) { %>
+			<li><a href="/membership">Become a Member</a></li>
+			<% } %>
+		</ul>
 	</nav>
 	<% } else { %>
 	<h2>You are not logged in!</h2>
 	<nav>
-		<a href="/log-in">Log in</a>
-		<a href="/sign-up">Create an account</a>
+		<ul class="flex--row nav-list">
+			<li><a href="/log-in">Log in</a></li>
+			<li><a href="/sign-up">Create an account</a></li>
+		</ul>
 	</nav>
 	<% } %>
 </header>

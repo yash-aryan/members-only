@@ -1,9 +1,10 @@
 :root {
 	--c-primary: #23599e;
-	--c-secondary: #eee;
+	--c-secondary: ghostwhite;
 	--c-neutral: white;
 	--c-error: orangered;
 	--round-corners: 8px;
+	--f-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 /* Global Styles */
@@ -18,18 +19,42 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
-}
-
-header {
-	text-align: center;
+	padding-top: 1rem;
+	font-family: var(--f-family);
+	line-height: 150%;
 }
 
 a {
 	color: #00b7ff;
 }
 
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+}
+
 /* Components */
+.header {
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	text-align: center;
+}
+
+.nav-list {
+	justify-content: center;
+	gap: 1rem;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
 .main-container {
 	min-width: 50%;
 	gap: 2rem;
@@ -48,7 +73,7 @@ a {
 	gap: 0.5rem;
 }
 .input-field {
-  padding: 0.5rem;
+	padding: 0.5rem;
 }
 .input-message {
 	resize: vertical;
@@ -58,19 +83,19 @@ a {
 	gap: 1rem;
 }
 .form_group {
-  margin-top: 1rem;
+	margin-top: 1rem;
 	gap: 1rem;
 }
 
 .btn {
+	align-self: center;
 	padding: 0.5rem 1rem;
-	background-color: var(--c-primary);
 	color: var(--c-neutral);
+	background-color: var(--c-primary);
 	border: none;
 	border-radius: var(--round-corners);
 }
 .btn--outline {
-	padding: 0.5rem 1rem;
 	color: var(--c-primary);
 	background-color: var(--c-neutral);
 	border: 2px solid var(--c-primary);
@@ -78,18 +103,22 @@ a {
 }
 
 .error-list {
-  padding: 0;
+	padding: 0;
 	list-style-type: '- ';
 	font-weight: 700;
 	color: var(--c-error);
 }
 
+.messages-section {
+	max-height: 60vh;
+	overflow: auto;
+}
 .message-container {
-	gap: 2rem;
+	gap: 1rem;
 	padding: 0.5rem;
 }
-
 .message {
+	gap: 0.5rem;
 	padding: 1rem;
 	background-color: var(--c-secondary);
 	border-radius: var(--round-corners);
@@ -100,4 +129,30 @@ a {
 }
 .message__heading {
 	margin: 0;
+}
+
+.img-container {
+	gap: 1rem;
+	align-items: center;
+}
+
+.text-shiny {
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+	background-image: linear-gradient(
+		to right,
+		hsla(210, 77%, 48%, 0.5),
+		hsl(271, 76%, 53%),
+		hsl(210, 77%, 48%),
+		hsla(210, 77%, 48%, 0.5)
+	);
+	animation: shiny 30s linear infinite;
+}
+
+@keyframes shiny {
+	to {
+		background-position: 100vw;
+	}
 }

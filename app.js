@@ -51,14 +51,21 @@ const limiter = RateLimit({
 app.use(limiter);
 
 // sets session ID cookie
-app.use(session({ secret: process.env.SECRET_KEY, resave: false, saveUninitialized: true }));
+app.use(
+	session({
+		secret: process.env.SECRET_KEY,
+		resave: false,
+		saveUninitialized: true,
+	})
+);
 
 // sets background processes for passport during passport.authenticate()
 app.use(passport.session());
 passport.use(
 	new LocalStrategy(async (name, password, done) => {
 		try {
-			const user = await User.findOne({ name });
+			const user = await User.findOne({ name }).exec();
+
 			if (!user) return done(null, false, { message: 'Incorrect username!' });
 
 			const passwordMatch = await bcrypt.compare(password, user.password);
@@ -75,7 +82,7 @@ passport.serializeUser((user, done) => done(null, user.id));
 
 passport.deserializeUser(async (id, done) => {
 	try {
-		const user = await User.findById(id);
+		const user = await User.findById(id).exec();
 		done(null, user);
 	} catch (err) {
 		done(err);
@@ -94,6 +101,7 @@ app.use((req, res, next) => {
 // routes
 app.use('/', require('./routes/index-route'));
 app.use('/sign-up', require('./routes/sign-up-route'));
+app.use('/membership', require('./routes/membership-route'));
 
 // login/logout routing
 app.get('/log-in', log_in_get);

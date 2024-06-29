@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include('./components/head') %>
+	<body>
+		<header class="header">
+			<h1>Become a <span class="text-shiny">Member</span></h1>
+		</header>
+		<main class="flex--col main-container">
+			<div class="flex--col img-container">
+				<h2>Answer this to obtain membership</h2>
+				<img
+					src="/images/membership-test.png"
+					alt="Gordon Ramsey asks: 'What are you?'"
+					width="500" />
+				<p>
+					<strong>The Membership test question: </strong>What are you? What are you in the eyes of
+					Gordon Ramsey? The answer is case-insensitive and only 2 words.
+				</p>
+			</div>
+			<form action="/membership" method="post" class="form flex--col">
+				<label class="flex--col labelled-input">
+					Final Answer
+					<input type="text" name="answer" autocomplete="off" class="input-field" required />
+				</label>
+				<button type="submit" class="btn">Submit Final Answer</button>
+			</form>
+			<% if (locals.errors) { %>
+				<%- include('./components/error-list') %>
+			<% } %>
+		</main>
+	</body>
+</html>

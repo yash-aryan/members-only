@@ -1,7 +1,13 @@
-<article class="message">
-	<div class="message__group flex--row">
-		<h3 class="message__heading"><%= message.author.name %></h3>
-		<span><%= message.createdAt %></span>
-	</div>
+<article class="flex--col message">
+	<% if (locals.user && user.isMember) { %>
+		<div class="message__group flex--row">
+			<% if (message.author.isMember) { %>
+				<h3 class="message__heading text-shiny"><%= message.author.name %></h3>
+			<% } else { %>
+				<h3 class="message__heading"><%= message.author.name %></h3>
+			<% } %>
+			<span><%= message.createdAt %></span>
+		</div>
+	<% } %>
 	<p><%= message.text %></p>
 </article>

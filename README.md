@@ -13,5 +13,5 @@ User details and messages are stored in a database using MongoDB on MongoDB Atla
 - [x] Create logic and page to create account/sign-up.
 - [x] Create logic and page to authenticate/log-in users.
 - [x] Create logic and page to view and send messages.
-- [ ] Create logic and page to become member & admin.
+- [x] Create logic and page to become member.
 - [x] Setup for production.
